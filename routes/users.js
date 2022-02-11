@@ -8,20 +8,26 @@ const { isValidRole,
 const {
     getUsers,
     putUser,
-    postUsers } = require('../controllers/users');
+    postUsers,
+    deleteUser } = require('../controllers/users');
 
 
 const router = Router();
 
 
 // routes
+// get users
 router.get('/', getUsers);
+
+// update user
 router.put('/:id', [
     check('id', 'Not a valid ID').isMongoId(),
     check('id').custom(isExistUserId),
     check('role').custom(isValidRole),
     validateFields,
 ], putUser);
+
+// send data
 router.post('/', [
     // validations
     check('name', 'The name is required').not().isEmpty(),
@@ -31,6 +37,12 @@ router.post('/', [
     check('role').custom(isValidRole),
     validateFields
 ], postUsers);
+
+router.delete('/:id', [
+    check('id', 'Not a valid ID').isMongoId(),
+    check('id').custom(isExistUserId),
+    validateFields
+], deleteUser);
 
 
 module.exports = router;

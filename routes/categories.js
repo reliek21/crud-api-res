@@ -1,6 +1,8 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { validarCampos } = require('../middlewares/validate-fields');
+const { createCategory } = require('../controllers/categories');
+const { validateFields } = require('../middlewares/validate-fields');
+
 
 const router = Router();
 
@@ -19,9 +21,10 @@ router.get('/:id', (req, res) => {
 
 
 // create category
-router.post('/', (req, res) => {
-    res.json('post');
-});
+router.post('/', [
+    check('name', 'Name is required').not().isEmpty(),
+    validateFields
+], createCategory);
 
 
 // update category

@@ -1,7 +1,16 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { createCategory } = require('../controllers/categories');
+
+const {
+    getCategories,
+    getCategory,
+    createCategory,
+    updateCategory,
+    deleteCategory } = require('../controllers/categories');
+
+const { isExistCategoryById } = require('../helpers/db-validators');
 const { validateFields } = require('../middlewares/validate-fields');
+// const { findByIdAndDelete } = require('../models/category');
 
 
 const router = Router();
@@ -9,15 +18,15 @@ const router = Router();
 
 // categories routes
 // get all categories
-router.get('/', (req, res) => {
-    res.json('TODO OK');
-});
+router.get('/', getCategories);
 
 
 // get category by id
-router.get('/:id', (req, res) => {
-    res.json('get by id');
-});
+router.get('/:id', [
+    check('id', 'Is not valid ID').isMongoId(),
+    check('id').custom(isExistCategoryById),
+    validateFields
+], getCategory);
 
 
 // create category
@@ -28,15 +37,19 @@ router.post('/', [
 
 
 // update category
-router.put('/:id', (req, res) => {
-    res.json('update');
-});
+router.put('/:id', [
+    check('name', 'name is required').not().isEmpty(),
+    check('id').custom(isExistCategoryById),
+    validateFields
+], updateCategory);
 
 
 // delete category
-router.delete('/:id', (req, res) => {
-    res.json('delete');
-});
+router.delete('/:id', [
+    check('id', 'Is not valid ID').isMongoId(),
+    check('id').custom(isExistCategoryById),
+    validateFields
+], deleteCategory);
 
 
 

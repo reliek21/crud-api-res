@@ -18,8 +18,17 @@ const isExistEmail = async (email = '') => {
     }
 }
 
+// TODO: custom validation user ID
+const isExistUserId = async (id) => {
+    const idExist = await User.findById(id);
+    if (!idExist) {
+        throw new Error(`The id ${id} does not exist`);
+    }
+}
+
 
 module.exports = {
     isValidRole,
-    isExistEmail
+    isExistEmail,
+    isExistUserId
 }

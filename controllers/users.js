@@ -25,7 +25,7 @@ const postUsers = async (req, res = response) => {
     if (trueEmail) {
         return res.status(400).json({
             message: 'This email already exists',
-        })
+        });
     }
 
     // encrypt password

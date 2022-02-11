@@ -16,13 +16,19 @@ const getUsers = (req = request, res = response) => {
 }
 
 const postUsers = async (req, res = response) => {
+
     const { name, email, password, role } = req.body;
     const user = new User({ name, email, password, role });
 
     //TODO: verify the email
+    const trueEmail = await User.findOne({ email });
+    if (trueEmail) {
+        return res.status(400).json({
+            message: 'This email already exists',
+        })
+    }
 
-
-    // TODO: encrypt password
+    // encrypt password
     const salt = bcryptjs.genSaltSync(10);
     user.password = bcryptjs.hashSync(password, salt);
 
@@ -51,5 +57,5 @@ const putUser = (req, res = response) => {
 module.exports = {
     getUsers,
     putUser,
-    postUsers
+    postUsers,
 }

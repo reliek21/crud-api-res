@@ -1,4 +1,5 @@
 const Role = require('../models/role');
+const User = require('../models/user');
 
 
 const isValidRole = async (role = '') => {
@@ -9,6 +10,16 @@ const isValidRole = async (role = '') => {
     }
 }
 
+// TODO: custom validation email
+const isExistEmail = async (email = '') => {
+    const emailExist = await User.findOne({ email });
+    if (emailExist) {
+        throw new Error(`The email ${email} is already`);
+    }
+}
+
+
 module.exports = {
-    isValidRole
+    isValidRole,
+    isExistEmail
 }

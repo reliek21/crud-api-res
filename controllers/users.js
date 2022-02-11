@@ -8,10 +8,16 @@ const getUsers = async (req = request, res = response) => {
 
     // TODO: create users by page
     const { limit = 5, to = 0 } = req.query;
-    const users = await User.find()
-        .skip(Number(to))
-        .limit(Number(limit));
-    res.json({ users });
+
+    const [total, users] = await Promise.all([
+        User.countDocuments({ state: true }),
+        User.find({ state: true })
+            .skip(Number(to))
+            .limit(Number(limit)),
+    ]);
+
+    res.json({ total, users });
+
 }
 
 const postUsers = async (req, res = response) => {

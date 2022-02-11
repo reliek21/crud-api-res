@@ -4,15 +4,20 @@ const bcryptjs = require('bcryptjs');
 const User = require('../models/user');
 
 
-const getUsers = (req = request, res = response) => {
-    const { name, country } = req.query;
+const getUsers = async (req = request, res = response) => {
 
-    res.json({
-        ok: true,
-        "msg": "get API - controller",
-        name,
-        country
-    });
+    // TODO: create users by page
+    const { limit = 5, to = 0 } = req.query;
+
+    const [total, users] = await Promise.all([
+        User.countDocuments({ state: true }),
+        User.find({ state: true })
+            .skip(Number(to))
+            .limit(Number(limit)),
+    ]);
+
+    res.json({ total, users });
+
 }
 
 const postUsers = async (req, res = response) => {
@@ -20,13 +25,6 @@ const postUsers = async (req, res = response) => {
     const { name, email, password, role } = req.body;
     const user = new User({ name, email, password, role });
 
-    //TODO: verify the email
-    const trueEmail = await User.findOne({ email });
-    if (trueEmail) {
-        return res.status(400).json({
-            message: 'This email already exists',
-        });
-    }
 
     // encrypt password
     const salt = bcryptjs.genSaltSync(10);
@@ -36,21 +34,35 @@ const postUsers = async (req, res = response) => {
     // save to database
     await user.save();
 
-    res.json({
-        ok: true,
-        "msg": "post API - controller",
-        user
-    });
+    res.json(user);
 }
 
-const putUser = (req, res = response) => {
-    const { id } = req.params.id;
+const putUser = async (req, res = response) => {
+    const { id } = req.params;
+    const { _id, password, google, email, ...rest } = req.body;
+
+    if (password) {
+        // encrypt password
+        const salt = bcryptjs.genSaltSync(10);
+        rest.password = bcryptjs.hashSync(password, salt);
+    }
+
+    // TODO: validate ID and Update
+    const user = await User.findByIdAndUpdate(id, rest);
+
+    res.json(user);
+}
+
+
+const deleteUser = async (req, res = response) => {
+
+    const { id } = req.params;
+
+    const user = await User.findByIdAndDelete(id);
 
     res.json({
-        ok: true,
-        "msg": "put API - controller",
-        id
-    });
+        user
+    })
 }
 
 
@@ -58,4 +70,5 @@ module.exports = {
     getUsers,
     putUser,
     postUsers,
+    deleteUser
 }

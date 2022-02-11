@@ -4,15 +4,14 @@ const bcryptjs = require('bcryptjs');
 const User = require('../models/user');
 
 
-const getUsers = (req = request, res = response) => {
-    const { name, country } = req.query;
+const getUsers = async (req = request, res = response) => {
 
-    res.json({
-        ok: true,
-        "msg": "get API - controller",
-        name,
-        country
-    });
+    // TODO: create users by page
+    const { limit = 5, to = 0 } = req.query;
+    const users = await User.find()
+        .skip(Number(to))
+        .limit(Number(limit));
+    res.json({ users });
 }
 
 const postUsers = async (req, res = response) => {
@@ -29,31 +28,23 @@ const postUsers = async (req, res = response) => {
     // save to database
     await user.save();
 
-    res.json({
-        ok: true,
-        "msg": "post API - controller",
-        user
-    });
+    res.json(user);
 }
 
 const putUser = async (req, res = response) => {
     const { id } = req.params;
     const { _id, password, google, email, ...rest } = req.body;
 
-    // TODO: validate ID
     if (password) {
         // encrypt password
         const salt = bcryptjs.genSaltSync(10);
         rest.password = bcryptjs.hashSync(password, salt);
     }
 
+    // TODO: validate ID and Update
     const user = await User.findByIdAndUpdate(id, rest);
 
-    res.json({
-        ok: true,
-        "msg": "put API - controller",
-        user
-    });
+    res.json(user);
 }
 
 

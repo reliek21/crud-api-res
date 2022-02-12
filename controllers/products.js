@@ -33,7 +33,7 @@ const createProduct = async (req, res = response) => {
 
     // generate data
     const data = {
-        name: body.name.toUpperCase(),
+        name: body.name,
         ...body
     }
 
@@ -61,7 +61,7 @@ const updateProduct = async (req, res = response) => {
     const data = req.body;
 
     if (data.name) {
-        data.name = data.name.toUpperCase();
+        data.name = data.name;
     }
 
     const product = await Product.findByIdAndUpdate(id, data, { new: true });

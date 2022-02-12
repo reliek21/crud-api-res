@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
+const { isValidObjectId } = require('mongoose');
 
 const {
     getCategories,
@@ -28,9 +29,19 @@ router.get('/:id', [
 ], getCategory);
 
 
+// checkProducts
+const checkProducts = (para) => {
+    return check(`${para}`, `${para} is required`)
+        .not()
+        .isEmpty();
+}
+
+
 // create category
 router.post('/', [
-    check('name', 'Name is required').not().isEmpty(),
+    checkProducts('code'),
+    checkProducts('name'),
+    checkProducts('description'),
     validateFields
 ], createCategory);
 
@@ -38,7 +49,6 @@ router.post('/', [
 // update category
 router.put('/:id', [
     check('name', 'name is required').not().isEmpty(),
-    // check('id').custom(isExistCategoryById),
     validateFields
 ], updateCategory);
 

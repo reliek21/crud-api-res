@@ -10,7 +10,6 @@ const {
 
 const { isExistCategoryById } = require('../helpers/db-validators');
 const { validateFields } = require('../middlewares/validate-fields');
-// const { findByIdAndDelete } = require('../models/category');
 
 
 const router = Router();

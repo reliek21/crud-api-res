@@ -8,7 +8,6 @@ class Server {
         this.app = express();
         this.port = process.env.PORT;
 
-        this.userRoutes = '/api/users';
         this.categoriesRoute = '/api/categories';
         this.productsRoute = '/api/products';
 
@@ -33,13 +32,9 @@ class Server {
 
         // reading and parsing of the body
         this.app.use(express.json());
-
-        // public directory
-        this.app.use(express.static('public'));
     }
 
     routes() {
-        this.app.use(this.userRoutes, require('../routes/users'));
         this.app.use(this.categoriesRoute, require('../routes/categories'));
         this.app.use(this.productsRoute, require('../routes/products'));
     }

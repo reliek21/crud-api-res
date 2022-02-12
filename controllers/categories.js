@@ -4,7 +4,7 @@ const Category = require('../models/category');
 
 // get categories
 const getCategories = async (req = request, res = response) => {
-    const { limit = 5, to = 0 } = req.query;
+    const { limit = 10, to = 0 } = req.query;
     const query = { state: true };
 
     const [total, categories] = await Promise.all([

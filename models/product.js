@@ -2,16 +2,12 @@ const { Schema, model } = require('mongoose');
 
 
 const ProductSchema = Schema({
-    id: {
-        type: Number,
-        require: [true, 'ID is required']
-    },
     code: {
         type: String,
         unique: true,
         require: [true, 'Code is required'],
-        min: [true, 'The code must be at minimum 4 characters in length'],
-        max: [true, 'The code must have a maximum of 10 characters']
+        min: [4, 'The code must be at minimum 4 characters in length'],
+        max: [10, 'The code must have a maximum of 10 characters']
     },
     name: {
         type: String,
@@ -40,7 +36,7 @@ const ProductSchema = Schema({
 
 
 ProductSchema.methods.toJSON = function () {
-    const { _id, __v, ...data } = this.toObject();
+    const { __v, ...data } = this.toObject();
     return data;
 }
 

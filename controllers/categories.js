@@ -21,8 +21,8 @@ const getCategories = async (req = request, res = response) => {
 }
 
 const createCategory = async (req, res = response) => {
-    const name = req.body.name.toUpperCase();
-    const categoryDB = await Category.findOne({ name });
+    const { ...body } = req.body;
+    const categoryDB = await Category.findOne({ name: body.name });
 
     if (categoryDB) {
         return res.status(400).json({
@@ -32,7 +32,8 @@ const createCategory = async (req, res = response) => {
 
     // generate data
     const data = {
-        name
+        name: body.name.toUpperCase(),
+        ...body
     }
 
     const category = new Category(data);

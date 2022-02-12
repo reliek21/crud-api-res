@@ -39,7 +39,7 @@ router.post('/', [
 // update category
 router.put('/:id', [
     check('name', 'name is required').not().isEmpty(),
-    check('id').custom(isExistCategoryById),
+    // check('id').custom(isExistCategoryById),
     validateFields
 ], updateCategory);
 

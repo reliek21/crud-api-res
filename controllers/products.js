@@ -4,7 +4,7 @@ const Product = require('../models/product');
 
 // get Product
 const getProducts = async (req = request, res = response) => {
-    const { limit = 5, to = 0 } = req.query;
+    const { limit = 20, to = 0 } = req.query;
     const query = { state: true };
 
     const [total, products] = await Promise.all([

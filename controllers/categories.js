@@ -32,7 +32,7 @@ const createCategory = async (req, res = response) => {
 
     // generate data
     const data = {
-        name: body.name.toUpperCase(),
+        name: body.name,
         ...body
     }
 
@@ -59,7 +59,7 @@ const updateCategory = async (req, res = response) => {
     const { id } = req.params;
     const data = req.body;
 
-    data.name = data.name.toUpperCase();
+    data.name = data.name;
 
     const category = await Category.findByIdAndUpdate(id, data, { new: true });
     res.json(category);

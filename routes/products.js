@@ -29,10 +29,21 @@ router.get('/:id', [
 ], getProduct);
 
 
+// checkProducts
+const checkProducts = (para) => {
+    return check(`${para}`, `${para} is required`)
+        .not()
+        .isEmpty();
+}
+
 // create product
 router.post('/', [
-    check('name', 'name is required').not().isEmpty(),
-    check('category', 'category is not valid ID').isMongoId(),
+    checkProducts('name'),
+    checkProducts('code'),
+    checkProducts('description'),
+    checkProducts('brand'),
+    checkProducts('price'),
+    check('category', 'Category is not valid ID').isMongoId(),
     check('category').custom(isExistCategoryById),
     validateFields
 ], createProduct);
@@ -40,6 +51,7 @@ router.post('/', [
 
 // update product
 router.put('/:id', [
+    check('id', 'Is not valid ID').isMongoId(),
     check('id').custom(isExistProductById),
     validateFields
 ], updateProduct);

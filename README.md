@@ -37,19 +37,19 @@ Start dev server
 ### Products
 #### Get all Products
 
-```http
+```
   GET /api/products
 ```
 
 #### Get Product
 
-```http
+```
   GET /api/products/{id}
 ```
 
 #### Create Product
 
-```http
+```
   GET /api/products/
 ```
 
@@ -67,7 +67,7 @@ Start dev server
 
 #### Update Product
 
-```http
+```
   GET /api/products/{id}
 ```
 
@@ -81,7 +81,7 @@ Start dev server
 
 #### Delete Product
 
-```http
+```
   GET /api/products/{id}
 ```
 
@@ -89,19 +89,19 @@ Start dev server
 ### Categories
 #### Get all Categories
 
-```http
+```
   GET /api/categories
 ```
 
 #### Get Category
 
-```http
+```
   GET /api/categories/{id}
 ```
 
 #### Create Category
 
-```http
+```
   GET /api/categories/
 ```
 
@@ -116,7 +116,7 @@ Start dev server
 
 #### Update Category
 
-```http
+```
   GET /api/categories/{id}
 ```
 
@@ -129,7 +129,7 @@ Start dev server
 
 #### Delete Category
 
-```http
+```
   GET /api/categories/{id}
 ```
 ## Author
